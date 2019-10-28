@@ -2,7 +2,7 @@ package com.fungames.rockpapersheetapi.controller;
 
 import com.fungames.rockpapersheetapi.api.response.ApiResponse;
 import com.fungames.rockpapersheetapi.api.response.GameResultApiResponse;
-import com.fungames.rockpapersheetapi.api.response.RoomConnectApiApiResponse;
+import com.fungames.rockpapersheetapi.api.response.RoomConnectApiResponse;
 import com.fungames.rockpapersheetapi.api.response.RoomDataApiResponse;
 import com.fungames.rockpapersheetapi.model.GameItem;
 import com.fungames.rockpapersheetapi.route.RoomRoute;
@@ -22,7 +22,7 @@ public class RoomController {
     }
 
     @GetMapping(path = RoomRoute.ROOT)
-    public ApiResponse<RoomConnectApiApiResponse> connectToRoom(){
+    public ApiResponse<RoomConnectApiResponse> connectToRoom(){
         return ApiResponse.of(roomService.connectToRoom());
     }
 
@@ -50,5 +50,11 @@ public class RoomController {
             @RequestParam("userId") UUID userId
     ){
         return ApiResponse.of(roomService.getResult(roomId, userId));
+    }
+
+    @DeleteMapping(path = RoomRoute.ROOT)
+    public ApiResponse<String> recreateRooms(){
+        roomService.recreateRooms();
+        return ApiResponse.of("OK");
     }
 }

@@ -1,6 +1,8 @@
 package com.fungames.rockpapersheetapi;
 
 import com.fungames.rockpapersheetapi.model.RoomModel;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.UUID;
 @Service
 @NoArgsConstructor
 public class RoomRepository {
+    @Getter(AccessLevel.PUBLIC)
     private List<RoomModel> rooms = new ArrayList<>();
 
     public Optional<RoomModel> findRoomById(UUID id){

@@ -1,6 +1,5 @@
 package com.fungames.rockpapersheetapi.model;
 
-import com.sun.corba.se.spi.ior.ObjectId;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

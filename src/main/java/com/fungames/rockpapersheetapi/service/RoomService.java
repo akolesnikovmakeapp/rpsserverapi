@@ -2,7 +2,7 @@ package com.fungames.rockpapersheetapi.service;
 
 import com.fungames.rockpapersheetapi.RoomRepository;
 import com.fungames.rockpapersheetapi.api.response.GameResultApiResponse;
-import com.fungames.rockpapersheetapi.api.response.RoomConnectApiApiResponse;
+import com.fungames.rockpapersheetapi.api.response.RoomConnectApiResponse;
 import com.fungames.rockpapersheetapi.api.response.RoomDataApiResponse;
 import com.fungames.rockpapersheetapi.model.GameItem;
 import com.fungames.rockpapersheetapi.model.RoomModel;
@@ -21,7 +21,11 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public RoomConnectApiApiResponse connectToRoom() {
+    public void recreateRooms(){
+        roomRepository.getRooms().clear();
+    }
+
+    public RoomConnectApiResponse connectToRoom() {
         RoomUserModel roomUserModel = new RoomUserModel();
         RoomModel roomModel = roomRepository.getEmptyRoom();
         roomModel.addUser(roomUserModel);
@@ -30,7 +34,7 @@ public class RoomService {
         System.out.println("USER1 NN " + (roomModel.getUser1() != null));
         System.out.println("USER2 NN " + (roomModel.getUser2() != null));
 
-        RoomConnectApiApiResponse response = RoomConnectApiApiResponse.of(transformRoomModelToResponse.apply(roomModel));
+        RoomConnectApiResponse response = RoomConnectApiResponse.of(transformRoomModelToResponse.apply(roomModel));
         response.setUserId(roomUserModel.getId().toString());
 
         return response;

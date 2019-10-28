@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class RoomConnectApiApiResponse extends RoomDataApiResponse {
+public class RoomConnectApiResponse extends RoomDataApiResponse {
     private String userId;
 
-    public static RoomConnectApiApiResponse of(RoomDataApiResponse data) {
-        RoomConnectApiApiResponse connect = new RoomConnectApiApiResponse();
+    public static RoomConnectApiResponse of(RoomDataApiResponse data) {
+        RoomConnectApiResponse connect = new RoomConnectApiResponse();
         connect.isAbandoned = data.isAbandoned;
         connect.isReadyToStart = data.isReadyToStart;
         connect.roomId = data.roomId;
