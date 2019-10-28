@@ -1,7 +1,10 @@
 package com.fungames.rockpapersheetapi.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -23,8 +26,10 @@ public class RoomModel {
 
     public boolean isAbandoned() {
         if(user1 != null && user2 != null) {
-            if (!user1.isActive() || !user2.isActive()) return true;
+            if (!user1.isActive() || !user2.isActive())
+                return true;
         }
+
         return false;
     }
 
@@ -83,9 +88,7 @@ public class RoomModel {
     }
 
     public boolean hadAccess(UUID userId){
-        if (user1 != null && user1.getId().equals(userId)) return true;
-        if (user2 != null && user2.getId().equals(userId)) return true;
-        return false;
+        return getUser(userId).isPresent();
     }
 
     public boolean hasResult(){
@@ -103,5 +106,17 @@ public class RoomModel {
     public void addUser(RoomUserModel user){
         if (user1 == null) user1 = user;
         else if (user2 == null) user2 = user;
+    }
+
+    public Optional<RoomUserModel> getUser(UUID userId){
+        if (user1 != null && user1.getId().equals(userId)) {
+            user1.setLastActivity(System.currentTimeMillis());
+            return Optional.of(user1);
+
+        } else if (user2 != null && user2.getId().equals(userId)) {
+            user2.setLastActivity(System.currentTimeMillis());
+            return Optional.of(user2);
+        }
+        return Optional.empty();
     }
 }

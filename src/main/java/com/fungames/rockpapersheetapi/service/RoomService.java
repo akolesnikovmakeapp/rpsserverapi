@@ -42,15 +42,22 @@ public class RoomService {
 
     public RoomDataApiResponse getRoom(UUID roomId, UUID userId) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
-        System.out.println("HERE RESULT");
         if(modelOptional.isPresent()){
-            System.out.println("HERE1 RESULT");
             if(modelOptional.get().hadAccess(userId)) {
-                System.out.println("HERE2 RESULT");
                 return transformRoomModelToResponse.apply(modelOptional.get());
             }
         }
         return RoomDataApiResponse.abandoned();
+    }
+
+    public void leaveRoom(UUID roomId, UUID userId) {
+        Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
+        if(modelOptional.isPresent()){
+            RoomModel roomModel = modelOptional.get();
+            if(roomModel.hadAccess(userId)) {
+                roomModel.getUser(userId).ifPresent(user -> user.setLastActivity(0));
+            }
+        }
     }
 
     public String setItem(UUID roomId, UUID userId, GameItem item) {
