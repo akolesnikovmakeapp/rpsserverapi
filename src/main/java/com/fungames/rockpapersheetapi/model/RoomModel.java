@@ -75,8 +75,9 @@ public class RoomModel {
             } else if(answer.getAnswerUser1() != answer.getAnswerUser2()) {
                 score.setUser2(score.getUser2() + 1);
             }
-            answer = new RoomAnswerModel();
+
             result = RoomAnswerModel.of(answer);
+            answer = new RoomAnswerModel();
         }
     }
 
