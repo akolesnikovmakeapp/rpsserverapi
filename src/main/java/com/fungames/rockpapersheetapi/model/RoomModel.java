@@ -11,14 +11,14 @@ public class RoomModel {
     private UUID id;
     private RoomUserModel user1;
     private RoomUserModel user2;
-    private RoomAnswerModel answer;
-    private RoomAnswerModel result;
+    private RoomGameModel game;
+    private RoomGameModel result;
     private RoomScoreModel score;
 
     public RoomModel(){
         id = UUID.randomUUID();
         score = new RoomScoreModel();
-        answer = new RoomAnswerModel();
+        game = new RoomGameModel();
     }
 
     public boolean isAbandoned() {
@@ -48,36 +48,37 @@ public class RoomModel {
         user1 = null;
         user2 = null;
         score = new RoomScoreModel();
-        answer = new RoomAnswerModel();
+        game = new RoomGameModel();
     }
 
-    public void setUserAnswer(UUID userId, GameItem item){
+    public UUID setUserAnswer(UUID userId, GameItem item){
         if(user1.getId().equals(userId)) {
-            if(answer.getAnswerUser1() == null) {
-                answer.setAnswerUser1(item);
+            if(game.getAnswerUser1() == null) {
+                game.setAnswerUser1(item);
                 checkResult();
             }
         } else if(user2.getId().equals(userId)) {
-            if(answer.getAnswerUser2() == null) {
-                answer.setAnswerUser2(item);
+            if(game.getAnswerUser2() == null) {
+                game.setAnswerUser2(item);
                 checkResult();
             }
         }
+        return game.getId();
     }
 
     private void checkResult() {
-        if(answer.getAnswerUser1() != null && answer.getAnswerUser2() != null) {
-            if(answer.getAnswerUser1() == GameItem.PAPER && answer.getAnswerUser2() == GameItem.ROCK
-                    || answer.getAnswerUser1() == GameItem.ROCK && answer.getAnswerUser2() == GameItem.SCISSORS
-                    || answer.getAnswerUser1() == GameItem.SCISSORS && answer.getAnswerUser2() == GameItem.PAPER
+        if(game.getAnswerUser1() != null && game.getAnswerUser2() != null) {
+            if(game.getAnswerUser1() == GameItem.PAPER && game.getAnswerUser2() == GameItem.ROCK
+                    || game.getAnswerUser1() == GameItem.ROCK && game.getAnswerUser2() == GameItem.SCISSORS
+                    || game.getAnswerUser1() == GameItem.SCISSORS && game.getAnswerUser2() == GameItem.PAPER
             ) {
                 score.setUser1(score.getUser1() + 1);
-            } else if(answer.getAnswerUser1() != answer.getAnswerUser2()) {
+            } else if(game.getAnswerUser1() != game.getAnswerUser2()) {
                 score.setUser2(score.getUser2() + 1);
             }
 
-            result = RoomAnswerModel.of(answer);
-            answer = new RoomAnswerModel();
+            result = RoomGameModel.of(game);
+            game = new RoomGameModel();
         }
     }
 

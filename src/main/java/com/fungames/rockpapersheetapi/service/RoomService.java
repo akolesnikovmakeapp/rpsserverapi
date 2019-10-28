@@ -53,26 +53,31 @@ public class RoomService {
         return RoomDataApiResponse.abandoned();
     }
 
-    public void setItem(UUID roomId, UUID userId, GameItem item) {
+    public String setItem(UUID roomId, UUID userId, GameItem item) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
             if(roomModel.hadAccess(userId)) {
-                roomModel.setUserAnswer(userId, item);
+                return roomModel.setUserAnswer(userId, item).toString();
             }
         }
+        return "";
     }
 
-    public GameResultApiResponse getResult(UUID roomId, UUID userId) {
+    public GameResultApiResponse getResult(UUID roomId, UUID userId, UUID gameId) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
             if(roomModel.hadAccess(userId)) {
-                GameResultApiResponse response = new GameResultApiResponse();
-                response.setResultReady(roomModel.hasResult());
-                response.setEnemyItem(roomModel.getEnemyItem(userId));
-                response.setScore(roomModel.getScore().toString());
-                return response;
+                if(roomModel.getResult().getId().equals(gameId)) {
+                    GameResultApiResponse response = new GameResultApiResponse();
+                    response.setResultReady(roomModel.hasResult());
+                    response.setEnemyItem(roomModel.getEnemyItem(userId));
+                    response.setScore(roomModel.getScore().toString());
+                    return response;
+                } else {
+                    return GameResultApiResponse.notReady();
+                }
             }
         }
         return GameResultApiResponse.failed();

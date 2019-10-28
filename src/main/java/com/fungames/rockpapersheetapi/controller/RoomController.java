@@ -40,16 +40,16 @@ public class RoomController {
             @RequestParam("userId") UUID userId,
             @RequestParam("item") GameItem gameItem
     ){
-        roomService.setItem(roomId, userId, gameItem);
-        return ApiResponse.of("OK");
+        return ApiResponse.of(roomService.setItem(roomId, userId, gameItem));
     }
 
     @GetMapping(path = RoomRoute.RESULT)
     public ApiResponse<GameResultApiResponse> getResult(
             @PathVariable("id") UUID roomId,
-            @RequestParam("userId") UUID userId
+            @RequestParam("userId") UUID userId,
+            @RequestParam("gameId") UUID gameId
     ){
-        return ApiResponse.of(roomService.getResult(roomId, userId));
+        return ApiResponse.of(roomService.getResult(roomId, userId, gameId));
     }
 
     @DeleteMapping(path = RoomRoute.ROOT)
