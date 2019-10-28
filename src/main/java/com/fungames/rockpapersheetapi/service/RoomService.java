@@ -30,10 +30,6 @@ public class RoomService {
         RoomModel roomModel = roomRepository.getEmptyRoom();
         roomModel.addUser(roomUserModel);
 
-        System.out.println("ID " + roomModel.getId().toString());
-        System.out.println("USER1 NN " + (roomModel.getUser1() != null));
-        System.out.println("USER2 NN " + (roomModel.getUser2() != null));
-
         RoomConnectApiResponse response = RoomConnectApiResponse.of(transformRoomModelToResponse.apply(roomModel));
         response.setUserId(roomUserModel.getId().toString());
 

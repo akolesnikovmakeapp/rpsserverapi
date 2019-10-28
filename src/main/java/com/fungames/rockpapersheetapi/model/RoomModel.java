@@ -54,6 +54,7 @@ public class RoomModel {
         user2 = null;
         score = new RoomScoreModel();
         game = new RoomGameModel();
+        result = null;
     }
 
     public UUID setUserAnswer(UUID userId, GameItem item){
