@@ -57,6 +57,8 @@ public class RoomModel {
     }
 
     public UUID setUserAnswer(UUID userId, GameItem item){
+        UUID id = game.getId();
+
         if(user1.getId().equals(userId)) {
             if(game.getAnswerUser1() == null) {
                 game.setAnswerUser1(item);
@@ -68,7 +70,8 @@ public class RoomModel {
                 checkResult();
             }
         }
-        return game.getId();
+
+        return id;
     }
 
     private void checkResult() {

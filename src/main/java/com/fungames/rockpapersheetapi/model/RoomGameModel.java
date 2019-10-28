@@ -9,8 +9,8 @@ import java.util.UUID;
 @Setter
 public class RoomGameModel {
     private UUID id;
-    private GameItem answerUser1;
-    private GameItem answerUser2;
+    private GameItem answerUser1 = null;
+    private GameItem answerUser2 = null;
 
     public RoomGameModel() {
         id = UUID.randomUUID();
