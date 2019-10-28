@@ -75,7 +75,7 @@ public class RoomService {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
-            if(roomModel.hadAccess(userId)) {
+            if(roomModel.hadAccess(userId) && !roomModel.isAbandoned()) {
                 if(roomModel.getResult().getId().equals(gameId)) {
                     GameResultApiResponse response = new GameResultApiResponse();
                     response.setResultReady(roomModel.hasResult());
