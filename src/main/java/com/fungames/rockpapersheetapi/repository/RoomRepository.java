@@ -1,4 +1,4 @@
-package com.fungames.rockpapersheetapi;
+package com.fungames.rockpapersheetapi.repository;
 
 import com.fungames.rockpapersheetapi.model.RoomModel;
 import lombok.AccessLevel;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -26,30 +27,19 @@ public class RoomRepository {
         return Optional.empty();
     }
 
+    private void clearRooms(){
+        rooms.stream().filter(RoomModel::isAbandoned).collect(Collectors.toList()).forEach(room -> rooms.remove(room));
+    }
+
     public RoomModel getEmptyRoom(){
+        clearRooms();
+
         for (RoomModel model : rooms) {
             if(model.isWaitingToUsers()) {
-                System.out.println("HERE1");
                 return model;
             }
         }
 
-        for (RoomModel model : rooms) {
-            if(model.isEmptyRoom()) {
-                System.out.println("HERE2");
-                return model;
-            }
-        }
-
-        for (RoomModel model : rooms) {
-            if(model.isAbandoned()) {
-                System.out.println("HERE3");
-                model.clearRoom();
-                return model;
-            }
-        }
-
-        System.out.println("HERE4");
         return addRoom();
     }
 

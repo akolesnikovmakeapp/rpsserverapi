@@ -33,11 +33,6 @@ public class RoomModel {
         return false;
     }
 
-    public boolean isEmptyRoom() {
-        if(user1 == null && user2 == null) return true;
-        return false;
-    }
-
     public boolean isWaitingToUsers() {
         if(user1 != null && user1.isActive() && user2 == null) return true;
         return false;
@@ -47,14 +42,6 @@ public class RoomModel {
         if(user1 != null && user1.isActive() && user2 != null && user2.isActive())
             return true;
         return false;
-    }
-
-    public void clearRoom(){
-        user1 = null;
-        user2 = null;
-        score = new RoomScoreModel();
-        game = new RoomGameModel();
-        result = null;
     }
 
     public UUID setUserAnswer(UUID userId, GameItem item){
@@ -91,7 +78,7 @@ public class RoomModel {
         }
     }
 
-    public boolean hadAccess(UUID userId){
+    public boolean hasAccess(UUID userId){
         return getUser(userId).isPresent();
     }
 

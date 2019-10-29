@@ -1,6 +1,6 @@
 package com.fungames.rockpapersheetapi.service;
 
-import com.fungames.rockpapersheetapi.RoomRepository;
+import com.fungames.rockpapersheetapi.repository.RoomRepository;
 import com.fungames.rockpapersheetapi.api.response.GameResultApiResponse;
 import com.fungames.rockpapersheetapi.api.response.RoomConnectApiResponse;
 import com.fungames.rockpapersheetapi.api.response.RoomDataApiResponse;
@@ -39,7 +39,7 @@ public class RoomService {
     public RoomDataApiResponse getRoom(UUID roomId, UUID userId) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
-            if(modelOptional.get().hadAccess(userId)) {
+            if(modelOptional.get().hasAccess(userId)) {
                 return transformRoomModelToResponse.apply(modelOptional.get());
             }
         }
@@ -50,7 +50,7 @@ public class RoomService {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
-            if(roomModel.hadAccess(userId)) {
+            if(roomModel.hasAccess(userId)) {
                 roomModel.getUser(userId).ifPresent(user -> user.setLastActivity(0));
             }
         }
@@ -60,18 +60,18 @@ public class RoomService {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
-            if(roomModel.hadAccess(userId)) {
+            if(roomModel.hasAccess(userId)) {
                 return roomModel.setUserAnswer(userId, item).toString();
             }
         }
-        return "";
+        return "NOT_FOUND";
     }
 
     public GameResultApiResponse getResult(UUID roomId, UUID userId, UUID gameId) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
             RoomModel roomModel = modelOptional.get();
-            if(roomModel.hadAccess(userId) && !roomModel.isAbandoned()) {
+            if(roomModel.hasAccess(userId) && !roomModel.isAbandoned()) {
                 if(roomModel.getResult().getId().equals(gameId)) {
                     GameResultApiResponse response = new GameResultApiResponse();
                     response.setResultReady(roomModel.hasResult());
