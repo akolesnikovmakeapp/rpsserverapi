@@ -56,12 +56,10 @@ public class RoomQueueRepository {
         UserQueueModel[] users = new UserQueueModel[2];
         int i = 0;
         for (UserQueueModel model : this.users) {
-            if (model.isActive() && model.getRoomId() == null)
-                users[i] = model;
-            else
-                return null;
-            if (++i > 1) break;
+            if (model.isActive() && model.getRoomId() == null) users[i++] = model;
+            if (i > 1) break;
         }
+        if(i <= 1) return null;
         return users;
     }
 }
