@@ -36,17 +36,15 @@ public class RoomService {
             return oModel.get().getRoomId();
         } else {
             UserQueueModel[] pair = roomQueueRepository.getPairOfUsers();
-            if(pair.length == 2) {
-                RoomModel roomModel = roomRepository.getEmptyRoom();
-                for (UserQueueModel model : pair) {
-                    roomModel.addUser(new RoomUserModel(model.getId()));
-                    model.setRoomId(roomModel.getId());
-                }
-                roomQueueRepository.removeUser(userId);
-                return roomModel.getId();
+            RoomModel roomModel = roomRepository.getEmptyRoom();
+            for (UserQueueModel model : pair) {
+                if(model == null) return null;
+                roomModel.addUser(new RoomUserModel(model.getId()));
+                model.setRoomId(roomModel.getId());
             }
+            roomQueueRepository.removeUser(userId);
+            return roomModel.getId();
         }
-        return null;
     }
 
     public RoomDataApiResponse getRoom(UUID roomId, UUID userId) {

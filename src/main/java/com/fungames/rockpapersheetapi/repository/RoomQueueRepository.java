@@ -53,11 +53,12 @@ public class RoomQueueRepository {
     }
 
     public UserQueueModel[] getPairOfUsers(){
-        UserQueueModel[] users = new UserQueueModel[0];
+        UserQueueModel[] users = new UserQueueModel[2];
         int i = 0;
         for (UserQueueModel model : this.users) {
-            if (model.isActive() && model.getRoomId() != null) users[i++] = model;
-            if(i > 1) break;
+            if (model.isActive() && model.getRoomId() == null)
+                users[i] = model;
+            if (++i > 1) break;
         }
         return users;
     }
