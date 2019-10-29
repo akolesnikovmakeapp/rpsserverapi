@@ -20,7 +20,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping(path = RoomRoute.ROOM_USER)
+    @GetMapping(path = RoomRoute.ROOM_QUEUE)
     public ApiResponse<String> regToQueue(){
         return ApiResponse.of(roomService.regToQueue().toString());
     }
@@ -64,11 +64,5 @@ public class RoomController {
             @RequestParam("gameId") UUID gameId
     ){
         return ApiResponse.of(roomService.getResult(roomId, userId, gameId));
-    }
-
-    @DeleteMapping(path = RoomRoute.ROOT)
-    public ApiResponse<String> recreateRooms(){
-        roomService.recreateRooms();
-        return ApiResponse.of("OK");
     }
 }

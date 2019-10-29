@@ -24,10 +24,6 @@ public class RoomService {
         this.roomQueueRepository = roomQueueRepository;
     }
 
-    public void recreateRooms(){
-        roomRepository.getRooms().clear();
-    }
-
     public UUID regToQueue() {
         return roomQueueRepository.addUser();
     }
