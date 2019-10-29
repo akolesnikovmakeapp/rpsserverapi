@@ -9,7 +9,7 @@ import java.util.UUID;
 @Setter
 public class UserQueueModel {
     private static final int ABANDONED_TIME = 2 * 60 * 60 * 1000;
-    private static final int ACTIVE_TIME = 1500;
+    private static final int ACTIVE_TIME = 2000;
 
     private UUID id;
     private UUID roomId;
@@ -21,7 +21,7 @@ public class UserQueueModel {
     }
 
     public boolean isActive(){
-        return System.currentTimeMillis() - timestamp > ACTIVE_TIME;
+        return System.currentTimeMillis() - timestamp < ACTIVE_TIME;
     }
 
     public boolean isUselessModel(){

@@ -30,6 +30,7 @@ public class RoomService {
 
     public UUID connectToRoom(UUID userId) {
         roomQueueRepository.actualizeUser(userId);
+
         Optional<UserQueueModel> oModel = roomQueueRepository.findQueueByUserId(userId);
         if(oModel.isPresent() && oModel.get().getRoomId() != null) {
             roomQueueRepository.removeUser(userId);
