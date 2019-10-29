@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 public class RoomModel {
-    private static final long MAX_ACTIVITY_DELAY = 60 * 1000; // 60 sec
+    private static final long MAX_ACTIVITY_DELAY = 90 * 1000; // 90 sec
 
     private UUID id;
     private RoomUserModel user1;
@@ -25,6 +25,9 @@ public class RoomModel {
     }
 
     public boolean isAbandoned() {
+        if(System.currentTimeMillis() - MAX_ACTIVITY_DELAY > game.getTimestamp())
+            return true;
+
         if(user1 != null && user2 != null) {
             if (!user1.isActive() || !user2.isActive())
                 return true;

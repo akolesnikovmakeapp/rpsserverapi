@@ -9,11 +9,13 @@ import java.util.UUID;
 @Setter
 public class RoomGameModel {
     private UUID id;
+    private long timestamp;
     private GameItem answerUser1 = null;
     private GameItem answerUser2 = null;
 
     public RoomGameModel() {
         id = UUID.randomUUID();
+        timestamp = System.currentTimeMillis();
     }
 
     public static RoomGameModel of(RoomGameModel model){
