@@ -36,12 +36,14 @@ public class RoomService {
             return oModel.get().getRoomId();
         } else {
             UserQueueModel[] pair = roomQueueRepository.getPairOfUsers();
+            if(pair == null) return null;
+
             RoomModel roomModel = roomRepository.getEmptyRoom();
             for (UserQueueModel model : pair) {
-                if(model == null) return null;
                 roomModel.addUser(new RoomUserModel(model.getId()));
                 model.setRoomId(roomModel.getId());
             }
+
             roomQueueRepository.removeUser(userId);
             return roomModel.getId();
         }

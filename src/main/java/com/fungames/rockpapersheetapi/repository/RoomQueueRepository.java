@@ -58,6 +58,8 @@ public class RoomQueueRepository {
         for (UserQueueModel model : this.users) {
             if (model.isActive() && model.getRoomId() == null)
                 users[i] = model;
+            else
+                return null;
             if (++i > 1) break;
         }
         return users;
