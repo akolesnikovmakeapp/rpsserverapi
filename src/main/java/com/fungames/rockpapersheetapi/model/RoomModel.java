@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 public class RoomModel {
-    private static final long MAX_ACTIVITY_DELAY = 90 * 1000; // 90 sec
+    private static final long MAX_ACTIVITY_DELAY = 45 * 1000; // 45 sec
 
     private UUID id;
     private RoomUserModel user1;
