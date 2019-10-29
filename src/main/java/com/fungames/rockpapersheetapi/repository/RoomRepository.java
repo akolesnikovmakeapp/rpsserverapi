@@ -33,13 +33,6 @@ public class RoomRepository {
 
     public RoomModel getEmptyRoom(){
         clearRooms();
-
-        for (RoomModel model : rooms) {
-            if(model.isWaitingToUsers()) {
-                return model;
-            }
-        }
-
         return addRoom();
     }
 

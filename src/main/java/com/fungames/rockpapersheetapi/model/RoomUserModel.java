@@ -16,8 +16,8 @@ public class RoomUserModel {
     private int score;
     private long lastActivity;
 
-    public RoomUserModel(){
-        id = UUID.randomUUID();
+    public RoomUserModel(UUID userId){
+        id = userId;
         lastActivity = System.currentTimeMillis();
     }
 

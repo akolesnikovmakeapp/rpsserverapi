@@ -1,8 +1,9 @@
 package com.fungames.rockpapersheetapi.service;
 
+import com.fungames.rockpapersheetapi.model.UserQueueModel;
+import com.fungames.rockpapersheetapi.repository.RoomQueueRepository;
 import com.fungames.rockpapersheetapi.repository.RoomRepository;
 import com.fungames.rockpapersheetapi.api.response.GameResultApiResponse;
-import com.fungames.rockpapersheetapi.api.response.RoomConnectApiResponse;
 import com.fungames.rockpapersheetapi.api.response.RoomDataApiResponse;
 import com.fungames.rockpapersheetapi.model.GameItem;
 import com.fungames.rockpapersheetapi.model.RoomModel;
@@ -16,24 +17,40 @@ import java.util.function.Function;
 @Service
 public class RoomService {
     private RoomRepository roomRepository;
+    private RoomQueueRepository roomQueueRepository;
 
-    public RoomService(RoomRepository roomRepository){
+    public RoomService(RoomRepository roomRepository, RoomQueueRepository roomQueueRepository){
         this.roomRepository = roomRepository;
+        this.roomQueueRepository = roomQueueRepository;
     }
 
     public void recreateRooms(){
         roomRepository.getRooms().clear();
     }
 
-    public RoomConnectApiResponse connectToRoom() {
-        RoomUserModel roomUserModel = new RoomUserModel();
-        RoomModel roomModel = roomRepository.getEmptyRoom();
-        roomModel.addUser(roomUserModel);
+    public UUID regToQueue() {
+        return roomQueueRepository.addUser();
+    }
 
-        RoomConnectApiResponse response = RoomConnectApiResponse.of(transformRoomModelToResponse.apply(roomModel));
-        response.setUserId(roomUserModel.getId().toString());
-
-        return response;
+    public UUID connectToRoom(UUID userId) {
+        roomQueueRepository.actualizeUser(userId);
+        Optional<UserQueueModel> oModel = roomQueueRepository.findQueueByUserId(userId);
+        if(oModel.isPresent() && oModel.get().getRoomId() != null) {
+            roomQueueRepository.removeUser(userId);
+            return oModel.get().getRoomId();
+        } else {
+            UserQueueModel[] pair = roomQueueRepository.getPairOfUsers();
+            if(pair.length == 2) {
+                RoomModel roomModel = roomRepository.getEmptyRoom();
+                for (UserQueueModel model : pair) {
+                    roomModel.addUser(new RoomUserModel(model.getId()));
+                    model.setRoomId(roomModel.getId());
+                }
+                roomQueueRepository.removeUser(userId);
+                return roomModel.getId();
+            }
+        }
+        return null;
     }
 
     public RoomDataApiResponse getRoom(UUID roomId, UUID userId) {
@@ -90,7 +107,6 @@ public class RoomService {
         RoomDataApiResponse response = new RoomDataApiResponse();
         response.setRoomId(roomModel.getId().toString());
         response.setAbandoned(roomModel.isAbandoned());
-        response.setReadyToStart(roomModel.isReadyToStart());
         return response;
     };
 }
