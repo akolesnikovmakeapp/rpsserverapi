@@ -25,7 +25,7 @@ public class RoomModel {
     }
 
     public boolean isAbandoned() {
-        if(System.currentTimeMillis() - MAX_ACTIVITY_DELAY > game.getTimestamp())
+        if(game.getTimestamp() + MAX_ACTIVITY_DELAY < System.currentTimeMillis())
             return true;
 
         if(user1 != null && user2 != null) {
