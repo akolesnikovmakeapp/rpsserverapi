@@ -21,8 +21,7 @@ public class UserQueueModel {
     }
 
     public boolean isActive(){
-        return true;
-//        return System.currentTimeMillis() - timestamp > ACTIVE_TIME;
+        return System.currentTimeMillis() - timestamp > ACTIVE_TIME;
     }
 
     public boolean isUselessModel(){
