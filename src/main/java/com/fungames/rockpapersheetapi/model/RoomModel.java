@@ -10,7 +10,7 @@ import java.util.UUID;
 // Todo вывести все методы из модели
 @Getter
 public class RoomModel {
-    private static final long MAX_ACTIVITY_DELAY = 50 * 1000; // 45 sec
+    private static final long MAX_ACTIVITY_DELAY = 35 * 1000; // 45 sec
 
     private UUID id;
     private RoomUserModel user1;
