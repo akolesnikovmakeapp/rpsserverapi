@@ -39,6 +39,15 @@ public class RoomController {
         return ApiResponse.of(roomService.getRoom(roomId, userId));
     }
 
+    @PostMapping(path = RoomRoute.BY_ID)
+    public ApiResponse<String> setReady(
+            @PathVariable("id") UUID roomId,
+            @RequestParam("userId") UUID userId
+    ) {
+        roomService.setReady(roomId, userId);
+        return ApiResponse.of("OK");
+    }
+
     @DeleteMapping(path = RoomRoute.BY_ID)
     public ApiResponse<String> leaveRoom(
             @PathVariable("id") UUID roomId,

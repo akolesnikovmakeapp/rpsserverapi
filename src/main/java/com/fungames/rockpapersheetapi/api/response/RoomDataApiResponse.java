@@ -8,10 +8,12 @@ import lombok.Setter;
 public class RoomDataApiResponse {
     protected String roomId;
     protected boolean isAbandoned;
+    protected boolean isReadyToNextRound;
 
     public static RoomDataApiResponse abandoned(){
         RoomDataApiResponse response = new RoomDataApiResponse();
         response.setAbandoned(true);
+        response.setReadyToNextRound(false);
         return response;
     }
 }

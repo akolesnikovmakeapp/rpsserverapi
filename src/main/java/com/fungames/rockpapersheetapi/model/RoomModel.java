@@ -7,9 +7,10 @@ import lombok.Setter;
 import java.util.Optional;
 import java.util.UUID;
 
+// Todo вывести все методы из модели
 @Getter
 public class RoomModel {
-    private static final long MAX_ACTIVITY_DELAY = 60 * 1000; // 45 sec
+    private static final long MAX_ACTIVITY_DELAY = 50 * 1000; // 45 sec
 
     private UUID id;
     private RoomUserModel user1;
@@ -17,6 +18,11 @@ public class RoomModel {
     private RoomGameModel game;
     private RoomGameModel result;
     private RoomScoreModel score;
+
+    @Getter(AccessLevel.PRIVATE)
+    private boolean readyUser1 = true;
+    @Getter(AccessLevel.PRIVATE)
+    private boolean readyUser2 = true;
 
     public RoomModel(){
         id = UUID.randomUUID();
@@ -33,17 +39,6 @@ public class RoomModel {
                 return true;
         }
 
-        return false;
-    }
-
-    public boolean isWaitingToUsers() {
-        if(user1 != null && user1.isActive() && user2 == null) return true;
-        return false;
-    }
-
-    public boolean isReadyToStart(){
-        if(user1 != null && user1.isActive() && user2 != null && user2.isActive())
-            return true;
         return false;
     }
 
@@ -76,6 +71,7 @@ public class RoomModel {
                 score.setUser2(score.getUser2() + 1);
             }
 
+            removeReadyStatus();
             result = RoomGameModel.of(game);
             game = new RoomGameModel();
         }
@@ -110,11 +106,23 @@ public class RoomModel {
         return "";
     }
 
-    public int getUserPosition(RoomUserModel user){
-        if(user1 != null) {
-            if (user.getId().equals(user1.getId())) return 1;
+    public void setUserReady(UUID userId){
+        Optional<RoomUserModel> oUser = getUser(userId);
+        if (oUser.isPresent()) {
+            if(user1 != null && user1.getId().equals(oUser.get().getId()))
+                readyUser1 = true;
+            else
+                readyUser2 = true;
         }
-        return 2;
+    }
+
+    public boolean isReadyToNext(){
+        return readyUser1 && readyUser2;
+    }
+
+    private void removeReadyStatus(){
+        readyUser1 = false;
+        readyUser2 = false;
     }
 
     public void addUser(RoomUserModel user){

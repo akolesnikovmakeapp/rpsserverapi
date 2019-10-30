@@ -50,6 +50,15 @@ public class RoomService {
         }
     }
 
+    public void setReady(UUID roomId, UUID userId) {
+        Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
+        if(modelOptional.isPresent()){
+            if(modelOptional.get().hasAccess(userId)) {
+                modelOptional.get().setUserReady(userId);
+            }
+        }
+    }
+
     public RoomDataApiResponse getRoom(UUID roomId, UUID userId) {
         Optional<RoomModel> modelOptional = roomRepository.findRoomById(roomId);
         if(modelOptional.isPresent()){
@@ -104,6 +113,7 @@ public class RoomService {
         RoomDataApiResponse response = new RoomDataApiResponse();
         response.setRoomId(roomModel.getId().toString());
         response.setAbandoned(roomModel.isAbandoned());
+        response.setReadyToNextRound(roomModel.isReadyToNext());
         return response;
     };
 }
