@@ -97,6 +97,26 @@ public class RoomModel {
         }
     }
 
+    public String getScore(UUID userId){
+        if(score != null) {
+            Optional<RoomUserModel> oUser = getUser(userId);
+            if (oUser.isPresent()) {
+                if(user2 != null && user2.getId().equals(oUser.get().getId())) {
+                    return score.getUser2() + " / " + score.getUser1();
+                }
+            }
+            return score.getUser1() + " / " + score.getUser2();
+        }
+        return "";
+    }
+
+    public int getUserPosition(RoomUserModel user){
+        if(user1 != null) {
+            if (user.getId().equals(user1.getId())) return 1;
+        }
+        return 2;
+    }
+
     public void addUser(RoomUserModel user){
         if (user1 == null) user1 = user;
         else if (user2 == null) user2 = user;

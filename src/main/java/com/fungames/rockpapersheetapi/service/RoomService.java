@@ -90,7 +90,7 @@ public class RoomService {
                     GameResultApiResponse response = new GameResultApiResponse();
                     response.setResultReady(roomModel.hasResult());
                     response.setEnemyItem(roomModel.getEnemyItem(userId));
-                    response.setScore(roomModel.getScore().toString());
+                    response.setScore(roomModel.getScore(userId));
                     return response;
                 } else {
                     return GameResultApiResponse.notReady();
